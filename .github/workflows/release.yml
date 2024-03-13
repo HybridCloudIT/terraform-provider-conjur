@@ -35,6 +35,7 @@ jobs:
         host_id: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_USERNAME }}
         api_key: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_API_KEY }}
         secrets: it/hci/accounts/artifactory/prod/artifacts/api_key|JFROG_API_TOKEN
+        
     - name: Get Artifactory URL
       uses: cyberark/conjur-action@v2.0.5
       with:
@@ -43,6 +44,7 @@ jobs:
         host_id: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_USERNAME }}
         api_key: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_API_KEY }}
         secrets: it/hci/accounts/artifactory/prod/url|ARTIFACTORY_URL
+
     - name: Get Artifactory Username
       uses: cyberark/conjur-action@v2.0.5
       with:
@@ -52,7 +54,7 @@ jobs:
         api_key: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_API_KEY }}
         secrets: it/hci/accounts/artifactory/prod/artifacts/username|JFROG_USERNAME
 
-      - name: Publish to Artifactory
-        run: |
-          # Use your JFrog Artifactory details and API token for authentication
-          curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ~/.terraform.d/plugins/terraform-provider-conjur https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/1.0.0/terraform-provider-conjur_0.0.1_darwin_amd64.zip
+    - name: Publish to Artifactory
+      run: |
+        # Use your JFrog Artifactory details and API token for authentication
+        curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ~/.terraform.d/plugins/terraform-provider-conjur https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/1.0.0/terraform-provider-conjur_0.0.1_darwin_amd64.zip
