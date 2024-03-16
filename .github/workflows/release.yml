@@ -22,10 +22,10 @@ jobs:
       with:
         go-version: '1.19'
 
-    - name: Build Terraform Provider
-      run: |
-        mkdir -p ~/.terraform.d/plugins/
-        go build -o ~/.terraform.d/plugins/terraform-provider-conjur main.go
+    - name: Run GoReleaser
+      uses: goreleaser/goreleaser-action@v5.0.0
+      with:
+        args: release --clean
 
     - name: Get Jfrog API Token
       uses: cyberark/conjur-action@v2.0.5
@@ -57,4 +57,6 @@ jobs:
     - name: Publish to Artifactory
       run: |
         # Use your JFrog Artifactory details and API token for authentication
-        curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ~/.terraform.d/plugins/terraform-provider-conjur https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/1.0.0/terraform-provider-conjur_0.0.1_darwin_amd64.zip
+        # curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ~/.terraform.d/plugins/terraform-provider-conjur https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/1.0.0/terraform-provider-conjur_0.0.1_darwin_amd64.zip
+        ls -lrth
+        ls -lrth ./dist/*
