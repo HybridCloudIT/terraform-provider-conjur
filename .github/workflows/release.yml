@@ -3,7 +3,7 @@ name: Publish Terraform Modules
 on:
   push:
     branches:
-      - feature/*  # Adjust the branch as needed
+      - feature/* 
 
 env:
   CONJUR_USERNAME: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_USERNAME }}
