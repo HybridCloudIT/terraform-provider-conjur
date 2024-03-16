@@ -1,9 +1,11 @@
-name: Publish Terraform Modules
+# Terraform Provider release workflow.
+name: Release
 
 on:
   push:
-    branches:
-      - feature/* 
+    tags:
+      - 'v*'
+
 
 env:
   CONJUR_USERNAME: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_USERNAME }}
