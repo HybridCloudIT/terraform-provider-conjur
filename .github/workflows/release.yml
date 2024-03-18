@@ -13,7 +13,7 @@ env:
 
 jobs:
   publish:
-    runs-on: ubuntu-on-prem
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
@@ -35,7 +35,7 @@ jobs:
     - name: Get Jfrog API Token
       uses: cyberark/conjur-action@v2.0.5
       with:
-        url: https://conjur-prod-follower.cisco.com:443
+        url: https://conjur-prod.cisco.com
         account: cisco
         host_id: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_USERNAME }}
         api_key: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_API_KEY }}
@@ -44,7 +44,7 @@ jobs:
     - name: Get Artifactory URL
       uses: cyberark/conjur-action@v2.0.5
       with:
-        url: https://conjur-prod-follower.cisco.com:443
+        url: https://conjur-prod.cisco.com
         account: cisco
         host_id: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_USERNAME }}
         api_key: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_API_KEY }}
@@ -53,7 +53,7 @@ jobs:
     - name: Get Artifactory Username
       uses: cyberark/conjur-action@v2.0.5
       with:
-        url: https://conjur-prod-follower.cisco.com:443
+        url: https://conjur-prod.cisco.com
         account: cisco
         host_id: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_USERNAME }}
         api_key: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_API_KEY }}
