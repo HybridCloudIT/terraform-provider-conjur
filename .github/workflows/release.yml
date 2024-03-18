@@ -13,7 +13,7 @@ env:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-on-prem
 
     steps:
     - name: Checkout Repository
@@ -23,10 +23,6 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: '1.19'
-
-    - name: listing to Artifactory
-      run: |
-        ls -lrth
 
     - name: Run GoReleaser
       uses: goreleaser/goreleaser-action@v5.0.0
@@ -66,6 +62,4 @@ jobs:
     - name: Publish to Artifactory
       run: |
         # Use your JFrog Artifactory details and API token for authentication
-        # curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ~/.terraform.d/plugins/terraform-provider-conjur https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/1.0.0/terraform-provider-conjur_0.0.1_darwin_amd64.zip
-        ls -lrth
-        ls -lrth ./dist/*
+        curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ~/.terraform.d/plugins/terraform-provider-conjur https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/1.0.0/terraform-provider-conjur_0.0.1_darwin_amd64.zip
