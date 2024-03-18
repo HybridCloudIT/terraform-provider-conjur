@@ -62,4 +62,9 @@ jobs:
     - name: Publish to Artifactory
       run: |
         # Use your JFrog Artifactory details and API token for authentication
-        curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ~/.terraform.d/plugins/terraform-provider-conjur https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/1.0.0/terraform-provider-conjur_0.0.1_darwin_amd64.zip
+        VERSION=${GITHUB_REF#refs/tags/}
+        for i in `ls -lrth ~/dist/*.zip | awk -F " " '{ print $9 }'`;do
+           echo $i
+           echo $VERSION
+        done
+        #curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ~/dist/*.zip https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/${VERSION}/terraform-provider-conjur_0.0.1_darwin_amd64.zip
