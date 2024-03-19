@@ -40,15 +40,6 @@ jobs:
         host_id: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_USERNAME }}
         api_key: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_API_KEY }}
         secrets: it/hci/accounts/artifactory/prod/artifacts/api_key|JFROG_API_TOKEN
-        
-    - name: Get Artifactory URL
-      uses: cyberark/conjur-action@v2.0.5
-      with:
-        url: https://conjur-prod.cisco.com
-        account: cisco
-        host_id: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_USERNAME }}
-        api_key: ${{ secrets.CONJUR_PROD_HCI_ACCOUNTS_API_KEY }}
-        secrets: it/hci/accounts/artifactory/prod/url|ARTIFACTORY_URL
 
     - name: Get Artifactory Username
       uses: cyberark/conjur-action@v2.0.5
@@ -64,5 +55,6 @@ jobs:
         # Use your JFrog Artifactory details and API token for authentication
         VERSION=${GITHUB_REF#refs/tags/}
         for i in `ls -lrth ./dist/*.zip | sort -r | uniq | awk -F " " '{ print $9 }'`;do
-           curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ./dist/*.zip https://artifactory.devhub-cloud.cisco.com/artifactory/HybridCloudIT/conjur/${VERSION}/${filename}
+           filename="${i##*/}"
+           curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T $i https://artifactory.devhub-cloud.cisco.com/artifactory/hybrid-cloud-it-terraform/HybridCloudIT/conjur/${VERSION}/${filename}
         done
