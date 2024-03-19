@@ -63,8 +63,6 @@ jobs:
       run: |
         # Use your JFrog Artifactory details and API token for authentication
         VERSION=${GITHUB_REF#refs/tags/}
-        for i in `ls -lrth ./dist/*.zip | awk -F " " '{ print $9 }'`;do
-           echo $i
-           echo $VERSION
+        for i in `ls -lrth ./dist/*.zip | sort -r | uniq | awk -F " " '{ print $9 }'`;do
+           curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ./dist/*.zip https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/${VERSION}/${filename}
         done
-        #curl -u ${JFROG_USERNAME}:${JFROG_API_TOKEN} -T ./dist/*.zip https://${ARTIFACTORY_URL}/HybridCloudIT/conjur/${VERSION}/terraform-provider-conjur_0.0.1_darwin_amd64.zip
