@@ -13,6 +13,7 @@ resource "conjur_secret_update" "example" {
 }
 
 data "conjur_secret" "dbpass" {
+  depends_on = [conjur_secret_update.example]
   name = "terraform-example/dbpass"
 }
 
