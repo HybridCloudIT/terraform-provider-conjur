@@ -188,13 +188,10 @@ func hash(s string) string {
 }
 
 func resourceSecretUpdateCreate(d *schema.ResourceData, meta interface{}) error {
-	// Implement create logic, which might be similar to update logic
 	return resourceSecretUpdateUpdate(d, meta)
 }
 
 func resourceSecretUpdateRead(d *schema.ResourceData, meta interface{}) error {
-	// Implement read logic
-	// You might want to retrieve the current secret value or leave this empty
 	return nil
 }
 
@@ -219,7 +216,5 @@ func resourceSecretUpdateUpdate(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceSecretUpdateDelete(d *schema.ResourceData, meta interface{}) error {
-	// Implement delete logic if necessary
-	// You might want to clear the secret or leave this as a no-op
 	return nil
 }
