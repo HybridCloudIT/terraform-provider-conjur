@@ -7,12 +7,13 @@ terraform {
   }
 }
 
-data "conjur_secret_update" "example" {
+resource "conjur_secret_update" "example" {
   name         = "terraform-example/dbpass"
   update_value = "NewSecretValue123"
 }
 
 data "conjur_secret" "dbpass" {
+  depends_on = [conjur_secret_update.example]
   name = "terraform-example/dbpass"
 }
 

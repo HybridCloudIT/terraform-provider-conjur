@@ -245,14 +245,14 @@ provider "conjur" {
   appliance_url = "http://conjur-write-server"
 }
 
-data "conjur_secret_update" "passwordupdate" {
+resource "conjur_secret_update" "passwordupdate" {
   provider     = conjur.write
   name         = "my/shiny/dbpass"
   update_value = "shinynewdbvalue"
 }
 
 data "conjur_secret" "password" {
-  depends_on   = [data.conjur_secret_update.passwordupdate]
+  depends_on   = [conjur_secret_update.passwordupdate]
   provider     = conjur.read
   name         = "my/shiny/dbpass"
 }

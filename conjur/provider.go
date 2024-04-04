@@ -14,9 +14,11 @@ import (
 // Provider implements Conjur as a schema.Provider
 func Provider() *schema.Provider {
 	return &schema.Provider{
+		ResourcesMap: map[string]*schema.Resource{
+			"conjur_secret_update": resourceSecretUpdate(),
+		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"conjur_secret": dataSourceSecret(),
-			"conjur_secret_update": dataSourceSecretUpdate(),
 		},
 		Schema: map[string]*schema.Schema{
 			"appliance_url": {
@@ -125,9 +127,13 @@ func dataSourceSecret() *schema.Resource {
 	}
 }
 
-func dataSourceSecretUpdate() *schema.Resource {
+// resourceSecretUpdate creates a new resource for secret update.
+func resourceSecretUpdate() *schema.Resource {
 	return &schema.Resource{
-		Read: dataSourceSecretUpdateRead,
+		Create: resourceSecretUpdateCreate,
+		Read:   resourceSecretUpdateRead,
+		Update: resourceSecretUpdateUpdate,
+		Delete: resourceSecretUpdateDelete,
 
 		Schema: map[string]*schema.Schema{
 			"name": {
@@ -176,27 +182,39 @@ func dataSourceSecretRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func dataSourceSecretUpdateRead(d *schema.ResourceData, meta interface{}) error {
+func hash(s string) string {
+	sha := sha256.Sum256([]byte(s))
+	return hex.EncodeToString(sha[:])
+}
+
+func resourceSecretUpdateCreate(d *schema.ResourceData, meta interface{}) error {
+	return resourceSecretUpdateUpdate(d, meta)
+}
+
+func resourceSecretUpdateRead(d *schema.ResourceData, meta interface{}) error {
+	return nil
+}
+
+func resourceSecretUpdateUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*conjurapi.Client)
 
 	name := d.Get("name").(string)
 	version := d.Get("version").(string)
 	update_value := d.Get("update_value").(string)
-	
+
 	log.Printf("[DEBUG] Setting secret for name=%q version=%q", name, version)
 	errAdd := client.AddSecret(name, update_value)
 
 	if errAdd != nil {
 		return errAdd
 	}
-	
+
 	d.Set("value", string(update_value))
 	d.SetId(hash(string(update_value)))
 
 	return nil
 }
 
-func hash(s string) string {
-	sha := sha256.Sum256([]byte(s))
-	return hex.EncodeToString(sha[:])
+func resourceSecretUpdateDelete(d *schema.ResourceData, meta interface{}) error {
+	return nil
 }
